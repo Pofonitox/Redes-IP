@@ -1,0 +1,497 @@
+/* ==========================================================================
+   Simulador de red doméstica · Hoja de estilos
+   ========================================================================== */
+
+/* ---------- Variables de color y tipografía ---------- */
+:root {
+  color-scheme: light;
+  --bg: #EDF0F2;
+  --surface: #FFFFFF;
+  --ink: #15202B;
+  --muted: #586878;
+  --line: #D5DCE2;
+  --accent: #0E6F68;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #DCEFEC;
+  --ok: #1F7A3E;
+  --ok-bg: #E1F2E7;
+  --warn: #9A4A06;
+  --warn-bg: #FBEBD3;
+  --bad: #B3261E;
+  --bad-bg: #FBE1DE;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0F161C;
+    --surface: #17212A;
+    --ink: #E6EDF3;
+    --muted: #93A3B3;
+    --line: #2A3641;
+    --accent: #3CC4B7;
+    --accent-ink: #07201D;
+    --accent-soft: #12312F;
+    --ok: #5CCB84;
+    --ok-bg: #15301F;
+    --warn: #F0A24B;
+    --warn-bg: #3A2A12;
+    --bad: #FF8C84;
+    --bad-bg: #3E1A18;
+  }
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-block: calc(28px + env(safe-area-inset-top, 0px)) calc(48px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+h1, h2, h3 {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Estructura de la página ---------- */
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 20px;
+  align-items: start;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  min-width: 0;
+}
+
+.panel h2 {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.panel h2 small {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ---------- Cabecera ---------- */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h1 {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-top: 6px;
+}
+
+.lede {
+  margin: 8px 0 0;
+  color: var(--muted);
+  max-width: 56ch;
+}
+
+/* Selector de escenario */
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 3px;
+  gap: 3px;
+}
+
+.seg button {
+  font: inherit;
+  font-weight: 500;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.seg button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- Tablas ---------- */
+.tablebox {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.dn {
+  display: block;
+  font-weight: 500;
+}
+
+.dt {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.mac {
+  color: var(--muted);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.row-bad td:nth-child(3) {
+  color: var(--bad);
+  font-weight: 500;
+}
+
+.act {
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Etiquetas de estado */
+.pill {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.pill.ok   { background: var(--ok-bg);   color: var(--ok); }
+.pill.warn { background: var(--warn-bg); color: var(--warn); }
+.pill.bad  { background: var(--bad-bg);  color: var(--bad); }
+
+.issues {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Botones de texto dentro de la tabla */
+.link {
+  font: inherit;
+  font-size: 13px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link.danger {
+  color: var(--bad);
+}
+
+/* ---------- Formularios ---------- */
+form.add {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  align-items: end;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  min-width: 0;
+}
+
+input,
+select {
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  min-width: 0;
+  width: 100%;
+}
+
+input:disabled {
+  opacity: 0.5;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 500;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 6px;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--accent);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.msg {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--bad);
+  margin: 8px 0 0;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Configuración del router ---------- */
+.cfg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.cfg .full {
+  grid-column: 1 / -1;
+}
+
+dl.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 14px 0 0;
+  font-size: 13px;
+}
+
+dl.facts dt {
+  color: var(--muted);
+}
+
+dl.facts dd {
+  margin: 0;
+  text-align: right;
+}
+
+.hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 12px 0 0;
+}
+
+/* ---------- Métricas ---------- */
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.metric {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.metric b {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.metric.bad b  { color: var(--bad); }
+.metric.warn b { color: var(--warn); }
+.metric.ok b   { color: var(--ok); }
+
+/* ---------- Registro de pruebas ---------- */
+.log {
+  margin-top: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  height: 220px;
+  overflow: auto;
+}
+
+.log div {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.log .t-ok   { color: var(--ok); }
+.log .t-bad  { color: var(--bad); }
+.log .t-warn { color: var(--warn); }
+.log .t-dim  { color: var(--muted); }
+
+.note {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.note-log {
+  margin: 10px 0 0;
+}
+
+/* ---------- Comparación antes y después ---------- */
+.cmp td:first-child {
+  font-weight: 500;
+}
+
+.cmp td.num,
+.cmp th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.delta-good {
+  color: var(--ok);
+  font-weight: 500;
+}
+
+.delta-flat {
+  color: var(--muted);
+}
+
+/* ---------- Adaptación a pantallas pequeñas ---------- */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

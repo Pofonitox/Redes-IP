@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Simulador de red doméstica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <div>
+        <div class="eyebrow">Prototipo · Informe REDES-G5</div>
+        <h1>Simulador de red doméstica</h1>
+        <p class="lede">Asigna IP estáticas, reservas y DHCP a los equipos del hogar y mira cómo cambian los conflictos y el rendimiento entre la red desordenada y la ordenada.</p>
+      </div>
+      <div class="seg" role="group" aria-label="Escenario">
+        <button type="button" id="sc-antes" aria-pressed="true">Antes (desordenada)</button>
+        <button type="button" id="sc-despues" aria-pressed="false">Después (ordenada)</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <div class="col">
+
+        <section class="panel" aria-labelledby="h-dev">
+          <h2 id="h-dev">Dispositivos conectados <small id="dev-count"></small></h2>
+          <div class="tablebox">
+            <table>
+              <thead>
+                <tr><th>Dispositivo</th><th>Modo</th><th>Dirección IP</th><th>MAC</th><th>Estado</th><th></th></tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+
+          <form class="add" id="add-form" autocomplete="off">
+            <label for="f-name">Nombre
+              <input id="f-name" type="text" maxlength="24" placeholder="Laptop de papá">
+            </label>
+            <label for="f-type">Tipo
+              <select id="f-type"></select>
+            </label>
+            <label for="f-mode">Modo
+              <select id="f-mode">
+                <option value="dhcp">DHCP (automática)</option>
+                <option value="static">Estática</option>
+                <option value="reserva">Reserva DHCP</option>
+              </select>
+            </label>
+            <label for="f-ip">Dirección IP
+              <input id="f-ip" class="mono" type="text" inputmode="decimal" placeholder="192.168.10.7" disabled>
+            </label>
+            <button class="btn" type="submit">Agregar</button>
+          </form>
+          <p class="msg" id="f-msg" role="status" aria-live="polite"></p>
+
+          <div class="toolbar">
+            <button class="btn ghost" type="button" id="btn-copy">Copiar tabla de direccionamiento</button>
+            <button class="btn ghost" type="button" id="btn-reset">Restaurar ejemplo</button>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-log">
+          <h2 id="h-log">Registro de pruebas
+            <span class="toolbar">
+              <button class="btn" type="button" id="btn-ping">Probar conectividad</button>
+              <button class="btn ghost" type="button" id="btn-clear">Limpiar</button>
+            </span>
+          </h2>
+          <div class="log" id="log" role="log" aria-live="polite"></div>
+          <p class="note note-log">La latencia y la pérdida de paquetes son simuladas con reglas fijas (los conflictos de IP degradan la conexión). Sirven para comparar escenarios; no reemplazan un ping real.</p>
+        </section>
+
+      </div>
+
+      <div class="col">
+
+        <section class="panel" aria-labelledby="h-cfg">
+          <h2 id="h-cfg">Router y servidor DHCP</h2>
+          <div class="cfg">
+            <label for="c-base" class="full">Red (3 primeros octetos)
+              <input id="c-base" class="mono" type="text" maxlength="11">
+            </label>
+            <label for="c-gw">Puerta de enlace (.x)
+              <input id="c-gw" class="mono" type="number" min="1" max="254">
+            </label>
+            <label for="c-sec">Seguridad Wi-Fi
+              <select id="c-sec"><option>Abierta</option><option>WPA2</option></select>
+            </label>
+            <label for="c-start">Pool: inicio (.x)
+              <input id="c-start" class="mono" type="number" min="1" max="254">
+            </label>
+            <label for="c-end">Pool: fin (.x)
+              <input id="c-end" class="mono" type="number" min="1" max="254">
+            </label>
+          </div>
+          <dl class="facts mono" id="facts"></dl>
+          <p class="hint">Si cambias la red, las IP estáticas que ya no coincidan se marcan como error. El servidor DHCP respeta las reservas, pero no conoce las IP estáticas que se escribieron a mano.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="h-met">
+          <h2 id="h-met">Estado de la red <small id="met-sc"></small></h2>
+          <div class="metrics" id="metrics"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <section class="panel" aria-labelledby="h-cmp">
+      <h2 id="h-cmp">Comparación antes y después
+        <button class="btn ghost" type="button" id="btn-copy-cmp">Copiar comparación</button>
+      </h2>
+      <div class="tablebox">
+        <table class="cmp">
+          <thead>
+            <tr><th>Métrica</th><th class="num">Antes</th><th class="num">Después</th><th class="num">Cambio</th></tr>
+          </thead>
+          <tbody id="cmp"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
